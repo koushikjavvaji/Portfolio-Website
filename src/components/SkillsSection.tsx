@@ -16,6 +16,7 @@ const skillCategories = [
     title: "Frameworks & Libraries",
     skills: [
       "React",
+      "Next.js",
       "Tailwind CSS",
       "Node.js",
       "Express.js",
@@ -24,12 +25,15 @@ const skillCategories = [
       "Spring Data JPA",
       "Hibernate",
       "GraphQL",
+      "Prisma",
+      "WebSockets",
     ],
   },
   {
     title: "Systems Programming",
     skills: [
       "Socket Programming",
+      "TCP/IP Networking",
       "Non-blocking I/O (epoll/kqueue)",
       "Event-driven Architecture",
       "HTTP/1.1 Protocol",
@@ -42,8 +46,10 @@ const skillCategories = [
     title: "Tools & Infrastructure",
     skills: [
       "Git",
+      "GitHub",
       "Docker",
       "Kubernetes",
+      "CMake",
       "Redis",
       "PostgreSQL",
       "MongoDB",
@@ -53,7 +59,7 @@ const skillCategories = [
     ],
   },
   {
-    title: "CONCEPTS",
+    title: "Concepts",
     skills: [
       "Data Structures & Algorithms",
       "Competitive Programming",
