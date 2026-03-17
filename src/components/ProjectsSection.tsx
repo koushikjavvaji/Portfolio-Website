@@ -39,8 +39,23 @@ const projects = [
     ],
     link: "https://github.com/koushikjavvaji/solana-token-launchpad",
   },
+  {
+    title: "FinFlow – Payment Application",
+    description:
+      "Full-stack payment app where users can sign up, check their balance, search other users, and transfer money between accounts with secure JWT authentication and atomic transactions.",
+    tech: [
+      "React.js",
+      "Vite",
+      "Tailwind CSS",
+      "Node.js",
+      "Express.js",
+      "MongoDB",
+      "JWT",
+      "Zod",
+    ],
+    link: "https://github.com/koushikjavvaji/FinFlow",
+  },
 ];
-
 const ProjectsSection = () => {
   return (
     <section id="projects" className="py-24 px-6 relative overflow-hidden">
