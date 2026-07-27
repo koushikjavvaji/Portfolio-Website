@@ -29,7 +29,7 @@ const commands = [
     icon: ExternalLink,
     action: () =>
       window.open(
-        "https://www.linkedin.com/in/koushik-javvaji-110642264/",
+        "https://www.linkedin.com/in/koushik-javvaji",
         "_blank",
       ),
     category: "Profiles",

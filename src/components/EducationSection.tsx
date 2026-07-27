@@ -6,7 +6,7 @@ const education = [
     degree: "B.Tech in Computer Science & Engineering",
     institution: "Indian Institute of Information Technology, Nagpur",
     shortName: "IIIT Nagpur",
-    period: "2022 - Present",
+    period: "2022 - 2026",
     location: "Nagpur, India",
     score: "CGPA: 8.18",
     courses:

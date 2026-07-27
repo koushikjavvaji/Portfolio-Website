@@ -32,7 +32,7 @@ const FooterSection = () => {
               <span>javvajikoushik2004@gmail.com</span>
             </motion.a>
             <motion.a
-              href="https://www.linkedin.com/in/koushik-javvaji-110642264/"
+              href="https://www.linkedin.com/in/koushik-javvaji"
               target="_blank"
               rel="noopener noreferrer"
               whileHover={{ y: -2 }}
