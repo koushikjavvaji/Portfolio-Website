@@ -3,16 +3,18 @@ import { Briefcase, Users, Code } from "lucide-react";
 
 const experiences = [
   {
-    title: "Software Engineer Intern",
+    title: "Software Engineer",
     company: "Pine Labs (Mosambee)",
-    period: "Sep 2025 - Current",
+    period: "Sep 2025 – Present",
     icon: Users,
-    location: "Remote",
+    location: "Mumbai, India",
     description: [
-      "Designed a configurable retry framework for transaction posting using exponential backoff, timeout handling, and dead-letter queues, reducing manual reconciliation effort by ~30%.",
-      "Implemented a real-time transaction cancellation system in the payment authorization service, enabling merchants to abort pending transactions and reducing payment disputes.",
-      "Built an Instant Payout system enabling T+0 merchant settlements (vs T+1), accelerating merchant cash flow and supporting 1.8Cr+ daily payouts.",
-      "Migrated payout service APIs from blocking RestTemplate to reactive WebFlux + Netty, improving throughput by ~35% in load testing and reducing thread usage by ~50% under high transaction load.",
+      "Designed and implemented an IMPS-based Instant Payout platform with payout previews, partial/full settlements, and configurable workflows. Redis-backed status caching avoided repeated database reads; deployed to 3,000+ merchants processing ₹6–7 Cr daily at 280 ms p99 latency.",
+      "Built idempotent, retry-safe payout processing with exponential backoff and dead-letter queues, guaranteeing exactly-once settlement on API failures; added reconciliation to resolve state mismatches against partner data.",
+      "Migrated payout services from blocking RestTemplate to Spring WebFlux + Netty with asynchronous downstream calls and non-blocking processing, raising throughput from 120 to 180 requests/sec and cutting thread usage by 50%.",
+      "Replaced a manual Excel-driven settlement workflow with a configurable scheduling engine supporting admin-defined windows, merchant/global rules, and day-of-week scheduling—cutting batch processing time from 45 minutes to 12 minutes.",
+      "Extended Metagrox, a GraphQL reporting platform, with queries consolidating multiple REST requests into a single fetch, reducing dashboard latency from 800 ms to 300 ms.",
+      "Implemented chargeback processing and real-time transaction cancellation, improving accuracy of the AI-driven Settlement Fraud Risk Manager (SFRM) for pre-payout risk screening.",
     ],
   },
 ];
@@ -66,7 +68,7 @@ const ExperienceSection = () => {
                     </span>
                   </div>
                   <p className="text-sm text-primary font-mono mb-3">
-                    {exp.company}
+                    {exp.company} · {exp.location}
                   </p>
                   <ul className="space-y-2">
                     {exp.description.map((desc, j) => (

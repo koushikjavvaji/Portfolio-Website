@@ -13,7 +13,7 @@ const lines = [
   {
     prefix: "const",
     text: [
-      { value: ' intern = "SWE Intern @ ' },
+      { value: ' role = "Software Engineer @ ' },
       { value: "Pine Labs", className: "text-[#0F6A53]" },
       { value: '";' },
     ],

@@ -8,7 +8,7 @@ const education = [
     shortName: "IIIT Nagpur",
     period: "2022 - Present",
     location: "Nagpur, India",
-    score: "CGPA: 8.14",
+    score: "CGPA: 8.18",
     courses:
       "Data Structures & Algorithms, Operating Systems, Database Management Systems, Computer Networks, Machine Learning, Theory of Computation",
     highlights: [

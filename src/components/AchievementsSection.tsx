@@ -41,6 +41,13 @@ const achievements = [
     highlight: false,
     url: "https://www.shaastra.org",
   },
+  {
+    icon: Award,
+    title: "CodeUnCode 2026",
+    description:
+      "Reached the finals and secured 23rd place among 75 finalists, progressing through preliminaries with 700+ participants and regionals with approximately 250 participants",
+    highlight: false,
+  },
 ];
 
 const AchievementsSection = () => {
@@ -66,7 +73,7 @@ const AchievementsSection = () => {
           {achievements.map((ach, i) => (
             <motion.a
               key={i}
-              href={ach.url}
+              href={ach.url ?? undefined}
               target="_blank"
               rel="noopener noreferrer"
               initial={{ opacity: 0, x: -20 }}
