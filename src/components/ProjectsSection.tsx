@@ -1,6 +1,5 @@
 import { motion } from "framer-motion";
 import { ExternalLink, Github } from "lucide-react";
-import FloatingAccents from "./FloatingAccents";
 
 const projects = [
   {
@@ -68,7 +67,6 @@ const projects = [
 const ProjectsSection = () => {
   return (
     <section id="projects" className="py-24 px-6 relative overflow-hidden">
-      <FloatingAccents variant="secondary" density="medium" />
       <div className="max-w-6xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

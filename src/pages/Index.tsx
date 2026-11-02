@@ -1,4 +1,4 @@
-import { lazy, Suspense, useState } from "react";
+import { lazy, Suspense } from "react";
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
 import StatsSection from "@/components/StatsSection";
@@ -9,21 +9,14 @@ import SkillsSection from "@/components/SkillsSection";
 import EducationSection from "@/components/EducationSection";
 import FooterSection from "@/components/FooterSection";
 import CommandPalette from "@/components/CommandPalette";
-import LoadingScreen from "@/components/LoadingScreen";
 
-const SpaceBackground = lazy(() => import("@/components/SpaceBackground"));
+const VoiceWaveBackground = lazy(() => import("@/components/VoiceWaveBackground"));
 
 const Index = () => {
-  const [loading, setLoading] = useState(true);
-
-  if (loading) {
-    return <LoadingScreen onComplete={() => setLoading(false)} />;
-  }
-
   return (
     <div className="min-h-screen bg-background text-foreground relative">
       <Suspense fallback={null}>
-        <SpaceBackground />
+        <VoiceWaveBackground />
       </Suspense>
       <Navbar />
       <HeroSection />

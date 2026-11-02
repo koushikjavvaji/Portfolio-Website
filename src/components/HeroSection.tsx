@@ -1,125 +1,86 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useSyncExternalStore } from "react";
 import { motion } from "framer-motion";
-import { ChevronDown, Download, Mail } from "lucide-react";
-import FloatingGeometry from "./FloatingGeometry";
+import { ChevronDown, Download, Mail, Mic } from "lucide-react";
+import { useTranscript } from "@/hooks/useTranscript";
+import { getLevel, isMicActive, startMic, stopMic, subscribeMic } from "@/lib/micLevel";
 import { useRatings, type Ratings } from "@/hooks/useRatings";
 
-const buildLines = (r: Ratings) => [
-  { prefix: "const", text: ' name = "Javvaji Venkata Koushik";', delay: 0 },
-  {
-    prefix: "const",
-    text: ' achievement = "2× ICPC Regionalist";',
-    delay: 0.8,
-  },
-  {
-    prefix: "const",
-    text: [
-      { value: ' previously = "Software Engineer @ ' },
-      { value: "Pine Labs", className: "text-primary" },
-      { value: '";' },
-    ],
-    delay: 1.6,
-  },
-  {
-    prefix: "const",
-    text: ' status = "open to new opportunities";',
-    delay: 2.4,
-  },
-  {
-    prefix: "const",
-    text: [
-      { value: " peak = { cf: " },
-      { value: String(r.codeforces.peak), className: "text-blue-400" },
-      { value: ", cc: " },
-      { value: String(r.codechef.peak), className: "text-amber-400" },
-      { value: ", lc: " },
-      { value: String(r.leetcode.peak), className: "text-orange-400" },
-      { value: ", ac: " },
-      { value: String(r.atcoder.peak), className: "text-emerald-400" },
-      { value: " };" },
-    ],
-    delay: 3.2,
-  },
-  {
-    prefix: "//",
-    text: " Ready to build something extraordinary.",
-    delay: 4.0,
-  },
-];
+const Stat = ({ label, value, className }: { label: string; value: number; className: string }) => (
+  <div className="glass rounded-lg px-4 py-3 text-left min-w-[96px]">
+    <div className="text-xs font-mono text-muted-foreground">{label}</div>
+    <div className={`text-2xl font-semibold ${className}`}>{value}</div>
+  </div>
+);
 
-const TypingLine = ({ prefix, text, delay }) => {
-  const [displayed, setDisplayed] = useState(0);
-  const [started, setStarted] = useState(false);
-
-  const segments = Array.isArray(text) ? text : [{ value: text }];
-
-  const full = segments.map((s) => s.value).join("");
-
+const LevelMeter = () => {
+  const refs = useRef<(HTMLSpanElement | null)[]>([]);
   useEffect(() => {
-    const timer = setTimeout(() => setStarted(true), delay * 1000);
-    return () => clearTimeout(timer);
-  }, [delay]);
-
-  useEffect(() => {
-    if (!started) return;
-    let i = 0;
-    const interval = setInterval(() => {
-      if (i <= full.length) {
-        setDisplayed(i);
-        i++;
-      } else {
-        clearInterval(interval);
-      }
-    }, 30);
-    return () => clearInterval(interval);
-  }, [started]);
-
-  if (!started) return null;
-
-  let remaining = displayed;
-
-  const isComment = prefix === "//";
-
+    let raf = 0;
+    const tick = (t: number) => {
+      const l = getLevel();
+      refs.current.forEach((el, i) => {
+        if (el) el.style.height = `${4 + l * 16 * (0.6 + 0.4 * Math.sin(t / 120 + i * 1.3) ** 2)}px`;
+      });
+      raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, []);
   return (
-    <div className="font-mono text-sm md:text-base leading-relaxed">
-      <span className={isComment ? "text-muted-foreground" : "text-accent"}>
-        {prefix}
-      </span>
+    <span className="inline-flex items-center gap-0.5 h-5">
+      {[0, 1, 2, 3, 4].map((i) => (
+        <span key={i} ref={(el) => (refs.current[i] = el)} className="w-0.5 rounded-full bg-primary" style={{ height: 4 }} />
+      ))}
+    </span>
+  );
+};
 
-      {segments.map((seg, i) => {
-        const take = Math.min(seg.value.length, remaining);
-        remaining -= take;
-        if (take <= 0) return null;
+const MicButton = () => {
+  const on = useSyncExternalStore(subscribeMic, isMicActive);
+  const [denied, setDenied] = useState(false);
+  const toggle = async () => {
+    if (on) return stopMic();
+    setDenied(!(await startMic()));
+  };
+  return (
+    <div className="flex flex-col items-center">
+      <button
+        onClick={toggle}
+        className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-lg glass glass-hover font-mono text-sm ${
+          on ? "ring-1 ring-primary" : ""
+        }`}
+        title="Speak and watch the background react"
+      >
+        {on ? <LevelMeter /> : <Mic size={16} className="text-primary" />}
+        {denied ? "Mic blocked" : on ? "Listening… tap to stop" : "Try voice mode"}
+      </button>
+    </div>
+  );
+};
 
-        return (
-          <span
-            key={i}
-            className={
-              isComment ? "text-muted-foreground" : seg.className || "text-foreground"
-            }
-          >
-            {seg.value.slice(0, take)}
-          </span>
-        );
-      })}
-
-      {displayed < full.length && (
-        <span className="terminal-cursor text-primary">▎</span>
-      )}
+const TranscriptBox = () => {
+  const on = useSyncExternalStore(subscribeMic, isMicActive);
+  const { text, supported } = useTranscript(on);
+  if (!on) return null;
+  return (
+    <div className="glass rounded-xl px-5 py-4 max-w-xl mx-auto mb-6 text-left min-h-[3.5rem]">
+      <div className="text-xs font-mono text-muted-foreground mb-1">live transcript</div>
+      <p className="text-base leading-relaxed">
+        {!supported
+          ? "Live transcript isn't supported in this browser. Try Chrome, Edge or Safari."
+          : text || <span className="text-muted-foreground">Say something…</span>}
+      </p>
     </div>
   );
 };
 
 const HeroSection = () => {
   const { ratings } = useRatings();
-  const lines = buildLines(ratings);
   return (
     <section
       className="relative min-h-screen flex items-center justify-center overflow-hidden z-0 mb-0"
       style={{ isolation: "isolate" }}
     >
-      <FloatingGeometry />
-
       <div className="relative z-10 max-w-4xl mx-auto px-6 text-center pt-20">
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
@@ -141,7 +102,7 @@ const HeroSection = () => {
           transition={{ duration: 1, delay: 0.3, ease: "easeOut" }}
           className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight mb-2"
         >
-          <span className="text-gradient drop-shadow-[0_0_30px_hsl(252,95%,68%,0.35)]">
+          <span className="text-gradient ">
             Javvaji Venkata Koushik
           </span>
         </motion.h1>
@@ -152,7 +113,7 @@ const HeroSection = () => {
           transition={{ duration: 0.8, delay: 0.7 }}
           className="text-lg md:text-xl text-muted-foreground mb-8 max-w-3xl mx-auto"
         >
-          Backend &amp; Systems Engineer · Competitive Programmer · Ex-Pine Labs
+          Software Engineer · AI Voice Agents · Competitive Programmer · Ex-Pine Labs
         </motion.p>
 
         <motion.div
@@ -175,35 +136,28 @@ const HeroSection = () => {
           >
             <Mail size={16} className="text-primary" /> Get in touch
           </a>
+          <MicButton />
         </motion.div>
 
-        {/* Terminal window */}
+        <TranscriptBox />
+
         <motion.div
-          initial={{ opacity: 0, y: 40, scale: 0.95 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
-          transition={{ duration: 1, delay: 1.0, ease: "easeOut" }}
-          className="glass rounded-xl overflow-hidden text-left max-w-2xl mx-auto"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 1.1 }}
+          className="flex flex-wrap items-center justify-center gap-3"
         >
-          <div className="flex items-center gap-2 px-4 py-3 border-b border-border/50">
-            <div className="w-3 h-3 rounded-full bg-destructive/60" />
-            <div className="w-3 h-3 rounded-full bg-primary/40" />
-            <div className="w-3 h-3 rounded-full bg-primary/60" />
-            <span className="text-xs font-mono text-muted-foreground ml-2">
-              ~/javvaji-venkata-koushik/portfolio
-            </span>
-          </div>
-          <div className="p-6 space-y-2">
-            {lines.map((line, i) => (
-              <TypingLine key={i} {...line} />
-            ))}
-          </div>
+          <Stat label="Codeforces peak" value={ratings.codeforces.peak} className="text-blue-600" />
+          <Stat label="CodeChef peak" value={ratings.codechef.peak} className="text-amber-600" />
+          <Stat label="LeetCode peak" value={ratings.leetcode.peak} className="text-orange-600" />
+          <Stat label="AtCoder peak" value={ratings.atcoder.peak} className="text-emerald-600" />
         </motion.div>
 
         {/* Scroll indicator */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 4.5 }}
+          transition={{ delay: 1.8 }}
           className="mt-16"
         >
           <motion.div

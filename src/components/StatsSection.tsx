@@ -2,38 +2,37 @@ import { useRef } from "react";
 import { useMotionValue, useSpring, useTransform } from "framer-motion";
 import { useState, useEffect } from "react";
 import { motion, useInView } from "framer-motion";
-import FloatingAccents from "./FloatingAccents";
 import { useRatings, codechefStars, leetcodeTitle, atcoderKyu, titleCase } from "@/hooks/useRatings";
 const profiles = [
   {
     key: "codeforces" as const,
     platform: "Codeforces",
-    color: "text-blue-400",
-    bar: "bg-blue-400",
+    color: "text-blue-600",
+    bar: "bg-blue-600",
     max: 3500,
     url: "https://codeforces.com/profile/KVK18",
   },
   {
     key: "codechef" as const,
     platform: "CodeChef",
-    color: "text-amber-400",
-    bar: "bg-amber-400",
+    color: "text-amber-600",
+    bar: "bg-amber-600",
     max: 3000,
     url: "https://www.codechef.com/users/kvk18",
   },
   {
     key: "leetcode" as const,
     platform: "LeetCode",
-    color: "text-orange-400",
-    bar: "bg-orange-400",
+    color: "text-orange-600",
+    bar: "bg-orange-600",
     max: 3500,
     url: "https://leetcode.com/u/JVK18/",
   },
   {
     key: "atcoder" as const,
     platform: "AtCoder",
-    color: "text-emerald-400",
-    bar: "bg-emerald-400",
+    color: "text-emerald-600",
+    bar: "bg-emerald-600",
     max: 3500,
     url: "https://atcoder.jp/users/KVK18",
   },
@@ -116,7 +115,6 @@ const StatsSection = () => {
 
   return (
     <section id="stats" className="py-24 px-6 relative overflow-hidden">
-      <FloatingAccents variant="primary" density="medium" />
       <div className="max-w-6xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -133,7 +131,7 @@ const StatsSection = () => {
           </h2>
           <p className="mt-3 text-sm text-muted-foreground font-mono flex items-center gap-2">
             <span
-              className={`w-2 h-2 rounded-full ${live ? "bg-emerald-400 animate-pulse" : "bg-muted-foreground"}`}
+              className={`w-2 h-2 rounded-full ${live ? "bg-emerald-600 animate-pulse" : "bg-muted-foreground"}`}
             />
             {live ? "synced live" : "cached"} · highest rating per platform
           </p>
