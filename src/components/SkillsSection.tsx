@@ -90,7 +90,7 @@ const SkillsSection = () => {
           </h2>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start [&>*:last-child:nth-child(odd)]:md:col-span-2">
           {skillCategories.map((cat, i) => (
             <motion.div
               key={cat.title}
