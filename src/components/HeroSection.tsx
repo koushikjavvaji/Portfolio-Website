@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Download, Mail } from "lucide-react";
 import FloatingGeometry from "./FloatingGeometry";
+import { useRatings, type Ratings } from "@/hooks/useRatings";
 
-const lines = [
+const buildLines = (r: Ratings) => [
   { prefix: "const", text: ' name = "Javvaji Venkata Koushik";', delay: 0 },
   {
     prefix: "const",
@@ -13,22 +14,28 @@ const lines = [
   {
     prefix: "const",
     text: [
-      { value: ' role = "Software Engineer @ ' },
-      { value: "Pine Labs", className: "text-[#0F6A53]" },
+      { value: ' previously = "Software Engineer @ ' },
+      { value: "Pine Labs", className: "text-primary" },
       { value: '";' },
     ],
     delay: 1.6,
   },
-  { prefix: "const", text: ' role = "Problem Solver ;)";', delay: 2.4 },
+  {
+    prefix: "const",
+    text: ' status = "open to new opportunities";',
+    delay: 2.4,
+  },
   {
     prefix: "const",
     text: [
-      { value: " ratings = { cf: " },
-      { value: "1626", className: "text-blue-500" },
+      { value: " peak = { cf: " },
+      { value: String(r.codeforces.peak), className: "text-blue-400" },
       { value: ", cc: " },
-      { value: "1960", className: "text-purple-400" },
+      { value: String(r.codechef.peak), className: "text-amber-400" },
       { value: ", lc: " },
-      { value: "1979", className: "text-orange-500" },
+      { value: String(r.leetcode.peak), className: "text-orange-400" },
+      { value: ", ac: " },
+      { value: String(r.atcoder.peak), className: "text-emerald-400" },
       { value: " };" },
     ],
     delay: 3.2,
@@ -75,7 +82,7 @@ const TypingLine = ({ prefix, text, delay }) => {
 
   return (
     <div className="font-mono text-sm md:text-base leading-relaxed">
-      <span className={isComment ? "text-[#6A9955]" : "text-accent"}>
+      <span className={isComment ? "text-muted-foreground" : "text-accent"}>
         {prefix}
       </span>
 
@@ -88,7 +95,7 @@ const TypingLine = ({ prefix, text, delay }) => {
           <span
             key={i}
             className={
-              isComment ? "text-[#6A9955]" : seg.className || "text-foreground"
+              isComment ? "text-muted-foreground" : seg.className || "text-foreground"
             }
           >
             {seg.value.slice(0, take)}
@@ -104,6 +111,8 @@ const TypingLine = ({ prefix, text, delay }) => {
 };
 
 const HeroSection = () => {
+  const { ratings } = useRatings();
+  const lines = buildLines(ratings);
   return (
     <section
       className="relative min-h-screen flex items-center justify-center overflow-hidden z-0 mb-0"
@@ -121,7 +130,7 @@ const HeroSection = () => {
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass">
             <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
             <span className="text-sm font-mono text-muted-foreground">
-              available for opportunities
+              open to new opportunities
             </span>
           </div>
         </motion.div>
@@ -132,7 +141,7 @@ const HeroSection = () => {
           transition={{ duration: 1, delay: 0.3, ease: "easeOut" }}
           className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight mb-2"
         >
-          <span className="text-gradient drop-shadow-[0_0_30px_hsl(155,100%,50%,0.4)]">
+          <span className="text-gradient drop-shadow-[0_0_30px_hsl(252,95%,68%,0.35)]">
             Javvaji Venkata Koushik
           </span>
         </motion.h1>
@@ -141,11 +150,32 @@ const HeroSection = () => {
           initial={{ opacity: 0, y: 20, filter: "blur(6px)" }}
           animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
           transition={{ duration: 0.8, delay: 0.7 }}
-          className="text-lg md:text-xl text-muted-foreground mb-12 max-w-3xl mx-auto"
+          className="text-lg md:text-xl text-muted-foreground mb-8 max-w-3xl mx-auto"
         >
-          Competitive Programmer · C++ Developer · Full Stack Developer ·
-          Problem Solver
+          Backend &amp; Systems Engineer · Competitive Programmer · Ex-Pine Labs
         </motion.p>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.9 }}
+          className="flex flex-wrap items-center justify-center gap-3 mb-12"
+        >
+          <a
+            href="/Koushik_Javvaji_Resume.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-primary text-primary-foreground font-mono text-sm font-semibold hover:opacity-90 transition-opacity"
+          >
+            <Download size={16} /> Resume
+          </a>
+          <a
+            href="mailto:javvajikoushik2004@gmail.com"
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg glass glass-hover font-mono text-sm"
+          >
+            <Mail size={16} className="text-primary" /> Get in touch
+          </a>
+        </motion.div>
 
         {/* Terminal window */}
         <motion.div

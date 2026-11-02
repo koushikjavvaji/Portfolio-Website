@@ -18,7 +18,7 @@ const FooterSection = () => {
             Let's <span className="text-gradient">Connect</span>
           </h2>
           <p className="text-muted-foreground mb-10 max-w-md mx-auto">
-            Open to internships, collaborations, and competitive programming
+            Open to full-time roles, collaborations, and competitive programming
             discussions.
           </p>
 
@@ -52,6 +52,26 @@ const FooterSection = () => {
               <span>GitHub</span>
             </motion.a>
             <motion.a
+              href="https://leetcode.com/u/JVK18/"
+              target="_blank"
+              rel="noopener noreferrer"
+              whileHover={{ y: -2 }}
+              className="glass glass-hover rounded-xl px-6 py-3 flex items-center gap-3 font-mono text-sm"
+            >
+              <ExternalLink size={16} className="text-accent" />
+              <span>LeetCode</span>
+            </motion.a>
+            <motion.a
+              href="https://atcoder.jp/users/KVK18"
+              target="_blank"
+              rel="noopener noreferrer"
+              whileHover={{ y: -2 }}
+              className="glass glass-hover rounded-xl px-6 py-3 flex items-center gap-3 font-mono text-sm"
+            >
+              <ExternalLink size={16} className="text-secondary" />
+              <span>AtCoder</span>
+            </motion.a>
+            <motion.a
               href="https://www.codechef.com/users/kvk18"
               target="_blank"
               rel="noopener noreferrer"
@@ -72,6 +92,9 @@ const FooterSection = () => {
               <span>Codeforces</span>
             </motion.a>
           </div>
+          <p className="mt-16 text-xs font-mono text-muted-foreground">
+            © {new Date().getFullYear()} Javvaji Venkata Koushik
+          </p>
         </motion.div>
       </div>
     </footer>

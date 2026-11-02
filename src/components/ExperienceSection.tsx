@@ -5,11 +5,15 @@ const experiences = [
   {
     title: "Software Engineer",
     company: "Pine Labs (Mosambee)",
-    period: "Sep 2025 – Present",
+    period: "Sep 2025 – Sep 2026",
+    roles: [
+      { label: "Software Engineer (Full-Time)", period: "Jul 2026 – Sep 2026" },
+      { label: "Software Engineer Intern", period: "Sep 2025 – Jul 2026" },
+    ],
     icon: Users,
     location: "Mumbai, India",
     description: [
-      "Designed and implemented an IMPS-based Instant Payout platform with payout previews, partial/full settlements, and configurable workflows. Redis-backed status caching avoided repeated database reads; deployed to 3,000+ merchants processing ₹6–7 Cr daily at 280 ms p99 latency.",
+      "Designed and implemented an IMPS-based Instant Payout platform with payout previews, partial/full settlements, and configurable workflows. Redis-backed caching for status lookups instead of repeated DB reads; deployed to 3,000+ merchants processing ₹6–7 Cr daily at 280 ms p99 latency.",
       "Built idempotent, retry-safe payout processing with exponential backoff and dead-letter queues, guaranteeing exactly-once settlement on API failures; added reconciliation to resolve state mismatches against partner data.",
       "Migrated payout services from blocking RestTemplate to Spring WebFlux + Netty with asynchronous downstream calls and non-blocking processing, raising throughput from 120 to 180 requests/sec and cutting thread usage by 50%.",
       "Replaced a manual Excel-driven settlement workflow with a configurable scheduling engine supporting admin-defined windows, merchant/global rules, and day-of-week scheduling—cutting batch processing time from 45 minutes to 12 minutes.",
@@ -70,6 +74,16 @@ const ExperienceSection = () => {
                   <p className="text-sm text-primary font-mono mb-3">
                     {exp.company} · {exp.location}
                   </p>
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    {exp.roles.map((r) => (
+                      <span
+                        key={r.label}
+                        className="text-xs font-mono px-3 py-1 rounded-full border border-border text-muted-foreground"
+                      >
+                        {r.label} · {r.period}
+                      </span>
+                    ))}
+                  </div>
                   <ul className="space-y-2">
                     {exp.description.map((desc, j) => (
                       <li

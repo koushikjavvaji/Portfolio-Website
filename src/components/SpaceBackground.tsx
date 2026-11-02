@@ -98,9 +98,9 @@ const SpaceBackground = () => {
           style={{
             animation: "spin 200s linear infinite",
             background: `
-              radial-gradient(ellipse 600px 200px at 30% 20%, hsl(155 100% 50% / 0.06), transparent),
+              radial-gradient(ellipse 600px 200px at 30% 20%, hsl(252 95% 68% / 0.06), transparent),
               radial-gradient(ellipse 500px 300px at 70% 60%, hsl(270 80% 65% / 0.05), transparent),
-              radial-gradient(ellipse 400px 250px at 50% 80%, hsl(185 80% 50% / 0.04), transparent)
+              radial-gradient(ellipse 400px 250px at 50% 80%, hsl(190 90% 55% / 0.04), transparent)
             `,
           }}
         />
@@ -110,7 +110,7 @@ const SpaceBackground = () => {
             animation: "spin 280s linear infinite reverse",
             background: `
               radial-gradient(ellipse 500px 350px at 60% 30%, hsl(270 80% 50% / 0.04), transparent),
-              radial-gradient(ellipse 350px 200px at 20% 70%, hsl(155 100% 40% / 0.03), transparent)
+              radial-gradient(ellipse 350px 200px at 20% 70%, hsl(252 95% 58% / 0.03), transparent)
             `,
           }}
         />
@@ -224,7 +224,7 @@ const SpaceBackground = () => {
             height: "100%",
             borderRadius: "50%",
             background: "radial-gradient(circle at 30% 30%, hsl(185 70% 60%), hsl(195 80% 30%) 55%, hsl(200 90% 12%))",
-            boxShadow: "inset -6px -3px 10px hsl(200 90% 8%), 0 0 35px hsl(185 80% 50% / 0.1), 0 0 60px hsl(185 70% 40% / 0.05)",
+            boxShadow: "inset -6px -3px 10px hsl(200 90% 8%), 0 0 35px hsl(190 90% 55% / 0.1), 0 0 60px hsl(185 70% 40% / 0.05)",
             animation: "planet-self-rotate 12s linear infinite",
             overflow: "hidden",
           }}

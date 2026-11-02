@@ -25,7 +25,7 @@ const shapes = {
 const FloatingAccents = ({ variant = "primary", density = "medium" }: FloatingAccentsProps) => {
   const items = density === "low" ? shapes[variant].slice(0, 2) : shapes[variant];
   const colorClass = variant === "primary" ? "border-primary/20" : variant === "secondary" ? "border-secondary/20" : "border-accent/20";
-  const glowColor = variant === "primary" ? "hsl(155 100% 50% / 0.08)" : variant === "secondary" ? "hsl(185 80% 50% / 0.08)" : "hsl(270 80% 65% / 0.08)";
+  const glowColor = variant === "primary" ? "hsl(252 95% 68% / 0.08)" : variant === "secondary" ? "hsl(190 90% 55% / 0.08)" : "hsl(38 95% 60% / 0.08)";
 
   return (
     <>

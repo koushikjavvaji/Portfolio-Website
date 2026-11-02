@@ -3,30 +3,39 @@ import { useMotionValue, useSpring, useTransform } from "framer-motion";
 import { useState, useEffect } from "react";
 import { motion, useInView } from "framer-motion";
 import FloatingAccents from "./FloatingAccents";
-const stats = [
+import { useRatings, codechefStars, leetcodeTitle, atcoderKyu, titleCase } from "@/hooks/useRatings";
+const profiles = [
   {
+    key: "codeforces" as const,
     platform: "Codeforces",
-    rating: "1626",
-    rank: "Expert",
-    detail: "AIR <1500 · 1000+ solved",
-    color: "text-blue-500",
+    color: "text-blue-400",
+    bar: "bg-blue-400",
+    max: 3500,
     url: "https://codeforces.com/profile/KVK18",
   },
   {
+    key: "codechef" as const,
     platform: "CodeChef",
-    rating: "1960",
-    rank: "4 Star",
-    detail: "AIR 1715",
-    color: "text-purple-400",
+    color: "text-amber-400",
+    bar: "bg-amber-400",
+    max: 3000,
     url: "https://www.codechef.com/users/kvk18",
   },
   {
+    key: "leetcode" as const,
     platform: "LeetCode",
-    rating: "1979",
-    rank: "Knight",
-    detail: "Top 2%",
-    color: "text-orange-500",
-    url: "https://leetcode.com/u/JVKoushik/",
+    color: "text-orange-400",
+    bar: "bg-orange-400",
+    max: 3500,
+    url: "https://leetcode.com/u/JVK18/",
+  },
+  {
+    key: "atcoder" as const,
+    platform: "AtCoder",
+    color: "text-emerald-400",
+    bar: "bg-emerald-400",
+    max: 3500,
+    url: "https://atcoder.jp/users/KVK18",
   },
 ];
 
@@ -34,10 +43,10 @@ const AnimatedNumber = ({
   value,
   inView,
 }: {
-  value: string;
+  value: number;
   inView: boolean;
 }) => {
-  const num = parseInt(value);
+  const num = value;
 
   const motionValue = useMotionValue(0);
   const spring = useSpring(motionValue, { duration: 2000 });
@@ -56,7 +65,7 @@ const AnimatedNumber = ({
   }, [inView, num, motionValue]);
 
   return (
-    <motion.span className="font-mono text-5xl md:text-6xl font-bold">
+    <motion.span className="font-mono text-4xl md:text-5xl font-bold">
       {display.toLocaleString()}
     </motion.span>
   );
@@ -65,6 +74,45 @@ const AnimatedNumber = ({
 const StatsSection = () => {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-100px" });
+  const { ratings, live } = useRatings();
+
+  const totalSolved =
+    (ratings.codeforces.solved ?? 0) +
+    (ratings.codechef.solved ?? 0) +
+    (ratings.leetcode.solved ?? 0) +
+    (ratings.atcoder.solved ?? 0);
+
+  const stats = profiles.map((p) => {
+    const d = ratings[p.key];
+    const rank =
+      p.key === "codeforces"
+        ? titleCase((d as typeof ratings.codeforces).rank ?? "expert")
+        : p.key === "codechef"
+          ? `${codechefStars(d.peak)}★`
+          : p.key === "atcoder"
+            ? atcoderKyu(d.peak)
+            : leetcodeTitle(d.peak);
+    return {
+      ...p,
+      rating: d.peak,
+      rank,
+      detail: [
+        p.key === "codeforces" && ratings.codeforces.airLabel
+          ? `AIR ${ratings.codeforces.airLabel}`
+          : null,
+        p.key === "codechef" && ratings.codechef.airBest
+          ? `AIR ${ratings.codechef.airBest}`
+          : null,
+        p.key === "leetcode" && ratings.leetcode.topPercent
+          ? `Top ${ratings.leetcode.topPercent}%`
+          : null,
+        d.solved ? `${d.solved.toLocaleString()} solved` : null,
+      ]
+        .filter(Boolean)
+        .join(" · "),
+      current: d.current,
+    };
+  });
 
   return (
     <section id="stats" className="py-24 px-6 relative overflow-hidden">
@@ -81,17 +129,23 @@ const StatsSection = () => {
             // competitive_programming
           </span>
           <h2 className="text-3xl md:text-4xl font-bold">
-            Ratings <span className="text-gradient">Stats</span>
+            Peak <span className="text-gradient">Ratings</span>
           </h2>
+          <p className="mt-3 text-sm text-muted-foreground font-mono flex items-center gap-2">
+            <span
+              className={`w-2 h-2 rounded-full ${live ? "bg-emerald-400 animate-pulse" : "bg-muted-foreground"}`}
+            />
+            {live ? "synced live" : "cached"} · highest rating per platform
+          </p>
         </motion.div>
 
         <div
           ref={ref}
-          className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto"
         >
           {stats.map((stat, i) => (
             <motion.a
-              key={stat.platform}
+              key={stat.key}
               href={stat.url}
               target="_blank"
               rel="noopener noreferrer"
@@ -100,7 +154,7 @@ const StatsSection = () => {
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: i * 0.15 }}
               whileHover={{ y: -5, transition: { duration: 0.2 } }}
-              className="glass glass-hover rounded-xl p-8 block cursor-pointer group"
+              className="glass glass-hover rounded-xl p-6 block cursor-pointer group"
             >
               <div className="flex items-center justify-between mb-6">
                 <span className="text-sm font-mono text-muted-foreground uppercase tracking-widest">
@@ -118,6 +172,11 @@ const StatsSection = () => {
               <p className="text-sm text-muted-foreground mt-4 font-mono">
                 {stat.detail}
               </p>
+              {stat.current && (
+                <p className="text-xs text-muted-foreground/70 mt-1 font-mono">
+                  current {stat.current}
+                </p>
+              )}
               <div className="mt-4 flex items-center gap-2">
                 <span className="text-xs font-mono text-muted-foreground group-hover:text-primary transition-colors">
                   View Profile →
@@ -125,18 +184,10 @@ const StatsSection = () => {
               </div>
               <div className="mt-3 h-1 rounded-full bg-muted overflow-hidden">
                 <motion.div
-                  className={`h-full rounded-full ${
-                    i === 0
-                      ? "bg-blue-500"
-                      : i === 1
-                        ? "bg-purple-400"
-                        : i === 2
-                          ? "bg-orange-500"
-                          : "bg-blue-500"
-                  }`}
+                  className={`h-full rounded-full ${stat.bar}`}
                   initial={{ width: 0 }}
                   whileInView={{
-                    width: `${(parseInt(stat.rating) / 3000) * 100}%`,
+                    width: `${(stat.rating / stat.max) * 100}%`,
                   }}
                   viewport={{ once: true }}
                   transition={{
@@ -163,7 +214,7 @@ const StatsSection = () => {
               total_problems_solved
             </span>
             <span className="text-gradient font-mono text-2xl font-bold">
-              &gt; 2000+
+              &gt; {totalSolved.toLocaleString()}+
             </span>
           </div>
         </motion.div>

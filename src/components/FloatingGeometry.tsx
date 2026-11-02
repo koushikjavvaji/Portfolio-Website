@@ -62,7 +62,7 @@ const FloatingGeometry = () => {
       <div
         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] rounded-full"
         style={{
-          background: "radial-gradient(circle, hsl(155 100% 50% / 0.05), transparent 70%)",
+          background: "radial-gradient(circle, hsl(252 95% 68% / 0.05), transparent 70%)",
         }}
       />
     </div>

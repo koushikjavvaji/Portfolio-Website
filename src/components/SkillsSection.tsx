@@ -113,7 +113,7 @@ const SkillsSection = () => {
                     transition={{ duration: 0, delay: 0 }}
                     whileHover={{
                       scale: 1.05,
-                      backgroundColor: "hsl(155 100% 50% / 0.1)",
+                      backgroundColor: "hsl(252 95% 68% / 0.1)",
                     }}
                     className="px-3 py-1.5 rounded-lg border border-border text-sm text-foreground font-mono cursor-default transition-colors"
                   >

@@ -6,9 +6,16 @@ const achievements = [
     icon: Trophy,
     title: "ICPC Regionals 2025 & 2026",
     description:
-      "Qualified for ICPC Regionals twice and competed at Amritapuri in 2025 and 2026, solving 4 and 3 problems respectively",
+      "Qualified for the ICPC Asia Amritapuri Regional Contest twice; solved 4 problems in the 2025 regional round",
     highlight: true,
     url: "https://icpc.global/",
+  },
+  {
+    icon: Award,
+    title: "Problem Setter — Algorithmia '24 (IIIT Nagpur)",
+    description:
+      "Authored problems for a global ICPC-style contest with 500+ teams from 15+ countries; mentored 100+ students as a core member of the Dot Slash Coding Club",
+    highlight: false,
   },
   {
     icon: Flame,

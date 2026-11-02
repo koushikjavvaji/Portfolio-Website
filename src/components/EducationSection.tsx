@@ -1,14 +1,14 @@
 import { motion } from "framer-motion";
-import { GraduationCap, MapPin, Calendar, ExternalLink } from "lucide-react";
+import { GraduationCap, MapPin, Calendar } from "lucide-react";
 
 const education = [
   {
     degree: "B.Tech in Computer Science & Engineering",
     institution: "Indian Institute of Information Technology, Nagpur",
     shortName: "IIIT Nagpur",
-    period: "2022 - 2026",
+    period: "Nov 2022 – Jul 2026",
     location: "Nagpur, India",
-    score: "CGPA: 8.18",
+    score: "GPA: 8.18 / 10",
     courses:
       "Data Structures & Algorithms, Operating Systems, Database Management Systems, Computer Networks, Machine Learning, Theory of Computation",
     highlights: [
@@ -58,11 +58,9 @@ const EducationSection = () => {
 
         <div className="space-y-6">
           {education.map((edu, i) => (
-            <motion.a
+            <motion.div
               key={i}
-              className={`glass glass-hover rounded-xl p-8 block group ${edu.url ? "cursor-pointer" : ""}`}
-              onClick={() => edu.url && window.open(edu.url, "_blank")}
-              rel="noopener noreferrer"
+              className="glass glass-hover rounded-xl p-8 block group"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -118,12 +116,8 @@ const EducationSection = () => {
                     ))}
                   </ul>
                 </div>
-                <ExternalLink
-                  size={16}
-                  className="text-muted-foreground group-hover:text-primary transition-colors shrink-0 mt-1"
-                />
               </div>
-            </motion.a>
+            </motion.div>
           ))}
         </div>
       </div>

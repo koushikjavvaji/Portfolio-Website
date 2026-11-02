@@ -4,6 +4,13 @@ import FloatingAccents from "./FloatingAccents";
 
 const projects = [
   {
+    title: "DevHive – Multi-Agent AI Debugging War Room",
+    description:
+      "Built a GPT-style transformer from scratch (byte-level BPE, RoPE, grouped-query attention, SwiGLU, KV-cached inference) and trained it end-to-end; vectorized pair-counting with NumPy, cutting BPE training time by 30%. Independent LLM teammates diagnose a pasted bug concurrently, then run structured cross-critique rounds to converge on one fix.",
+    tech: ["Python", "PyTorch", "FastAPI", "WebSockets", "SQLite", "pytest", "GitHub Actions", "Render"],
+    link: "https://github.com/koushikjavvaji/devhive",
+  },
+  {
     title: "Hyperion HTTP Server",
     description:
       "High-performance HTTP server built from scratch in C++17. Custom kqueue event loop with a completion-based proactor architecture (submission queue, completion queue). Achieves 215,000+ req/sec with a custom HTTP parser, in-memory file cache, connection pooling, and live metrics dashboard.",
@@ -24,6 +31,7 @@ const projects = [
       "Turborepo",
     ],
     link: "https://github.com/koushikjavvaji/DRAWR",
+    live: "https://koushik-drawr.vercel.app",
   },
   {
     title: "Solana Token Launchpad",
@@ -54,6 +62,7 @@ const projects = [
       "Zod",
     ],
     link: "https://github.com/koushikjavvaji/FinFlow",
+    live: "https://koushik-finflow.vercel.app/",
   },
 ];
 const ProjectsSection = () => {
@@ -96,12 +105,32 @@ const ProjectsSection = () => {
                     {project.title}
                   </h3>
                   <div className="flex gap-2">
-                    <a href={project.link} target="_blank">
-                      <ExternalLink
+                    <a
+                      href={project.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={`${project.title} on GitHub`}
+                      title="Source"
+                    >
+                      <Github
                         size={16}
-                        className="text-muted-foreground group-hover:text-primary transition-colors"
+                        className="text-muted-foreground hover:text-primary transition-colors"
                       />
                     </a>
+                    {"live" in project && project.live && (
+                      <a
+                        href={project.live}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={`${project.title} live demo`}
+                        title="Live demo"
+                      >
+                        <ExternalLink
+                          size={16}
+                          className="text-muted-foreground hover:text-primary transition-colors"
+                        />
+                      </a>
+                    )}
                   </div>
                 </div>
                 <p className="text-sm text-muted-foreground mb-5 leading-relaxed">
@@ -132,6 +161,7 @@ const ProjectsSection = () => {
         <a
           href="https://github.com/koushikjavvaji/?tab=repositories"
           target="_blank"
+          rel="noopener noreferrer"
           className="inline-flex items-center gap-2 px-6 py-3 glass glass-hover rounded-lg font-mono text-sm"
         >
           <Github size={18} />

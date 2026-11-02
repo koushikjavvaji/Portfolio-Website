@@ -21,7 +21,13 @@ const commands = [
   {
     label: "View LeetCode Profile",
     icon: Code,
-    action: () => window.open("https://leetcode.com/u/JVKoushik/", "_blank"),
+    action: () => window.open("https://leetcode.com/u/JVK18/", "_blank"),
+    category: "Profiles",
+  },
+  {
+    label: "View AtCoder Profile",
+    icon: Code,
+    action: () => window.open("https://atcoder.jp/users/KVK18", "_blank"),
     category: "Profiles",
   },
   {

@@ -1,0 +1,27 @@
+{
+  "updatedAt": "2026-11-02T12:14:39.543Z",
+  "codeforces": {
+    "peak": 1626,
+    "rank": "expert",
+    "airLabel": "<1500",
+    "current": 1601,
+    "solved": 587
+  },
+  "codechef": {
+    "peak": 1960,
+    "stars": 4,
+    "airBest": 1715,
+    "current": 1807,
+    "solved": 81,
+    "air": 3498
+  },
+  "leetcode": {
+    "peak": 1979,
+    "topPercent": 2
+  },
+  "atcoder": {
+    "peak": 852,
+    "current": 783,
+    "solved": 118
+  }
+}
