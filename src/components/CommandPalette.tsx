@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Command,
@@ -118,12 +118,18 @@ const CommandPalette = () => {
   const [query, setQuery] = useState("");
   const [selected, setSelected] = useState(0);
 
-  const filtered = commands.filter((c) =>
-    c.label.toLowerCase().includes(query.toLowerCase()),
+  const filtered = useMemo(
+    () => commands.filter((c) => c.label.toLowerCase().includes(query.toLowerCase())),
+    [query],
   );
 
-  const handleKeyDown = useCallback(
-    (e: KeyboardEvent) => {
+  // Keep the latest state in a ref so the key listener is attached only once.
+  const stateRef = useRef({ open, filtered, selected });
+  stateRef.current = { open, filtered, selected };
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      const { open, filtered, selected } = stateRef.current;
       if ((e.metaKey || e.ctrlKey) && e.key === "k") {
         e.preventDefault();
         setOpen((prev) => !prev);
@@ -144,27 +150,23 @@ const CommandPalette = () => {
         filtered[selected].action();
         setOpen(false);
       }
-    },
-    [open, filtered, selected],
-  );
-
-  useEffect(() => {
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [handleKeyDown]);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
 
   useEffect(() => {
     setSelected(0);
   }, [query]);
 
-  const grouped = filtered.reduce<Record<string, typeof commands>>(
+  const grouped = useMemo(() => filtered.reduce<Record<string, typeof commands>>(
     (acc, cmd) => {
       if (!acc[cmd.category]) acc[cmd.category] = [];
       acc[cmd.category].push(cmd);
       return acc;
     },
     {},
-  );
+  ), [filtered]);
 
   return (
     <>
@@ -192,7 +194,7 @@ const CommandPalette = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-background/80 backdrop-blur-sm z-[100]"
+              className="fixed inset-0 bg-foreground/10 z-[100]"
               onClick={() => setOpen(false)}
             />
             <motion.div
@@ -200,7 +202,7 @@ const CommandPalette = () => {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: -20 }}
               transition={{ duration: 0.15 }}
-              className="fixed top-[20%] left-1/2 -translate-x-1/2 w-[90vw] max-w-lg z-[101] glass rounded-xl border border-border overflow-hidden shadow-2xl"
+              className="fixed top-[20%] left-1/2 -translate-x-1/2 w-[90vw] max-w-lg z-[101] bg-card rounded-xl border border-border overflow-hidden shadow-2xl"
             >
               <div className="flex items-center gap-3 px-4 py-3 border-b border-border">
                 <Search size={16} className="text-muted-foreground shrink-0" />

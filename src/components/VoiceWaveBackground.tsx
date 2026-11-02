@@ -21,7 +21,7 @@ const VoiceWaveBackground = () => {
 
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     // Low resolution is plenty for blurry gradients and keeps it cheap.
-    const scale = 0.5;
+    const scale = 0.12;
     let w = 0;
     let h = 0;
 
@@ -52,7 +52,13 @@ const VoiceWaveBackground = () => {
     let micLevel = 0;
     let raf = 0;
 
+    let lastFrame = 0;
     const draw = (time: number) => {
+      if (document.hidden || time - lastFrame < 33) {
+        if (!reduced) raf = requestAnimationFrame(draw);
+        return;
+      }
+      lastFrame = time;
       const target = getLevel();
       micLevel += (target - micLevel) * 0.15;
       scrollEnergy *= 0.94;
@@ -93,7 +99,7 @@ const VoiceWaveBackground = () => {
       <canvas
         ref={canvasRef}
         className="absolute inset-0 w-full h-full"
-        style={{ filter: "blur(40px)", opacity: 0.4 }}
+        style={{ opacity: 0.4, imageRendering: "auto", willChange: "opacity", transform: "translateZ(0)" }}
       />
     </div>
   );
