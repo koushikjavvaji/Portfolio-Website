@@ -5,10 +5,10 @@ import { getLevel } from "@/lib/micLevel";
    swell with scroll speed and live microphone input (voice-reactive). */
 
 const BLOBS = [
-  { color: "170 215 190", x: 0.2, y: 0.15, r: 0.38, sx: 0.00021, sy: 0.00017 }, // sage
-  { color: "250 205 160", x: 0.85, y: 0.2, r: 0.34, sx: 0.00017, sy: 0.00023 }, // peach
-  { color: "180 205 240", x: 0.75, y: 0.75, r: 0.4, sx: 0.00019, sy: 0.00015 }, // sky
-  { color: "245 190 200", x: 0.15, y: 0.8, r: 0.32, sx: 0.00023, sy: 0.00021 }, // blush
+  { color: "170, 215, 190", x: 0.08, y: 0.06, r: 0.36, sx: 0.00021, sy: 0.00017 }, // sage
+  { color: "250, 205, 160", x: 0.95, y: 0.08, r: 0.32, sx: 0.00017, sy: 0.00023 }, // peach
+  { color: "180, 205, 240", x: 0.98, y: 0.95, r: 0.38, sx: 0.00019, sy: 0.00015 }, // sky
+  { color: "245, 190, 200", x: 0.02, y: 0.94, r: 0.3, sx: 0.00023, sy: 0.00021 }, // blush
 ];
 
 const VoiceWaveBackground = () => {
@@ -65,17 +65,17 @@ const VoiceWaveBackground = () => {
       mouse.x += (mouse.tx - mouse.x) * 0.04;
       mouse.y += (mouse.ty - mouse.y) * 0.04;
 
-      canvas.style.opacity = String(0.4 + micLevel * 0.5);
+      canvas.style.opacity = String(0.85 + micLevel * 0.15);
       ctx.clearRect(0, 0, w, h);
       ctx.globalCompositeOperation = "source-over";
 
       const swell = 1 + micLevel * 0.9 + scrollEnergy * 0.25;
       BLOBS.forEach((b, i) => {
-        const cx = (b.x + Math.sin(time * b.sx + i * 2) * 0.09 + (mouse.x - 0.5) * 0.06 * (i % 2 ? 1 : -1)) * w;
-        const cy = (b.y + Math.cos(time * b.sy + i * 3) * 0.09 + (mouse.y - 0.5) * 0.06 * (i % 2 ? -1 : 1)) * h;
+        const cx = (b.x + Math.sin(time * b.sx + i * 2) * 0.05 + (mouse.x - 0.5) * 0.06 * (i % 2 ? 1 : -1)) * w;
+        const cy = (b.y + Math.cos(time * b.sy + i * 3) * 0.05 + (mouse.y - 0.5) * 0.06 * (i % 2 ? -1 : 1)) * h;
         const radius = b.r * Math.max(w, h) * swell;
         const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, radius);
-        g.addColorStop(0, `rgba(${b.color}, ${0.5 + micLevel * 0.5})`);
+        g.addColorStop(0, `rgba(${b.color}, ${0.75 + micLevel * 0.25})`);
         g.addColorStop(1, `rgba(${b.color}, 0)`);
         ctx.fillStyle = g;
         ctx.fillRect(0, 0, w, h);
@@ -99,7 +99,7 @@ const VoiceWaveBackground = () => {
       <canvas
         ref={canvasRef}
         className="absolute inset-0 w-full h-full"
-        style={{ opacity: 0.4, imageRendering: "auto", willChange: "opacity", transform: "translateZ(0)" }}
+        style={{ opacity: 0.85, imageRendering: "auto", willChange: "opacity", transform: "translateZ(0)" }}
       />
     </div>
   );
