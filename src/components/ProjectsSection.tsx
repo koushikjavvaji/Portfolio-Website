@@ -3,6 +3,26 @@ import { ExternalLink, Github } from "lucide-react";
 
 const projects = [
   {
+    title: "PreCue – Real-Time AI Voice Copilot",
+    description:
+      "Built a voice copilot that fact-checks live speech against the speaker's documents, using hybrid BM25 + vector RAG, contextual retrieval and a LangGraph decision engine; scored 109/111 on a hard eval with 0 false alerts. Delivers corrections as private earphone whispers and alerts in a click-through overlay hidden from screen sharing, with one-line installers and 280+ tests running on macOS, Windows and Linux in CI.",
+    tech: [
+      "Python",
+      "LangGraph",
+      "LangChain",
+      "PyTorch",
+      "Deepgram",
+      "Gemini",
+      "Groq",
+      "WebSockets",
+      "pytest",
+      "GitHub Actions",
+      "Vercel",
+    ],
+    link: "https://github.com/koushikjavvaji/PreCue",
+    live: "https://getprecue.vercel.app",
+  },
+  {
     title: "DevHive – Multi-Agent AI Debugging War Room",
     description:
       "Built a GPT-style transformer from scratch (byte-level BPE, RoPE, grouped-query attention, SwiGLU, KV-cached inference) and trained it end-to-end; vectorized pair-counting with NumPy, cutting BPE training time by 30%. Independent LLM teammates diagnose a pasted bug concurrently, then run structured cross-critique rounds to converge on one fix.",
