@@ -90,10 +90,13 @@ const StatsSection = () => {
           ? `${codechefStars(d.peak)}★`
           : p.key === "atcoder"
             ? atcoderKyu(d.peak)
-            : leetcodeTitle(d.peak);
+            : d.peak > 0
+              ? leetcodeTitle(d.peak)
+              : null;
     return {
       ...p,
       rating: d.peak,
+      solved: d.solved ?? 0,
       rank,
       detail: [
         p.key === "codeforces" && ratings.codeforces.airLabel
@@ -105,7 +108,7 @@ const StatsSection = () => {
         p.key === "leetcode" && ratings.leetcode.topPercent
           ? `Top ${ratings.leetcode.topPercent}%`
           : null,
-        d.solved ? `${d.solved.toLocaleString()} solved` : null,
+        d.peak > 0 && d.solved ? `${d.solved.toLocaleString()} solved` : null,
       ]
         .filter(Boolean)
         .join(" · "),
@@ -158,14 +161,23 @@ const StatsSection = () => {
                 <span className="text-sm font-mono text-muted-foreground uppercase tracking-widest">
                   {stat.platform}
                 </span>
-                <span
-                  className={`text-xs font-mono px-3 py-1 rounded-full border border-border ${stat.color}`}
-                >
-                  {stat.rank}
-                </span>
+                {stat.rank && (
+                  <span
+                    className={`text-xs font-mono px-3 py-1 rounded-full border border-border ${stat.color}`}
+                  >
+                    {stat.rank}
+                  </span>
+                )}
               </div>
               <div className={stat.color}>
-                <AnimatedNumber value={stat.rating} inView={inView} />
+                {stat.rating > 0 ? (
+                  <AnimatedNumber value={stat.rating} inView={inView} />
+                ) : (
+                  <>
+                    <AnimatedNumber value={stat.solved} inView={inView} />
+                    <span className="ml-2 text-sm font-mono text-muted-foreground">solved</span>
+                  </>
+                )}
               </div>
               <p className="text-sm text-muted-foreground mt-4 font-mono">
                 {stat.detail}

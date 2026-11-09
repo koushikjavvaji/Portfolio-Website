@@ -12,11 +12,11 @@ export interface Ratings {
 const FALLBACK: Ratings = {
   codeforces: { peak: 1626, rank: "expert", airLabel: "<1500" },
   codechef: { peak: 1960, airBest: 1715 },
-  leetcode: { peak: 1979, topPercent: 2 },
+  leetcode: { peak: 0 }, // 0 = no contests yet, so no rating is shown.
   atcoder: { peak: 852 },
 };
 
-const CACHE_KEY = "ratings-v3";
+const CACHE_KEY = "ratings-v4";
 
 const readCache = (): Ratings | null => {
   try {
@@ -30,9 +30,9 @@ const merge = (base: Ratings, next: Partial<Ratings>): Ratings => {
   const out = { ...base };
   (["codeforces", "codechef", "leetcode", "atcoder"] as const).forEach((k) => {
     const n = next[k];
-    if (n?.peak) {
+    if (n?.peak || n?.solved) {
       // Peak never decreases.
-      out[k] = { ...base[k], ...n, peak: Math.max(base[k].peak, n.peak) } as never;
+      out[k] = { ...base[k], ...n, peak: Math.max(base[k].peak, n.peak ?? 0) } as never;
     }
   });
   if (next.updatedAt) out.updatedAt = next.updatedAt;

@@ -149,7 +149,9 @@ const HeroSection = () => {
         >
           <Stat label="Codeforces peak" value={ratings.codeforces.peak} className="text-blue-600" />
           <Stat label="CodeChef peak" value={ratings.codechef.peak} className="text-amber-600" />
-          <Stat label="LeetCode peak" value={ratings.leetcode.peak} className="text-orange-600" />
+          {ratings.leetcode.peak > 0 && (
+            <Stat label="LeetCode peak" value={ratings.leetcode.peak} className="text-orange-600" />
+          )}
           <Stat label="AtCoder peak" value={ratings.atcoder.peak} className="text-emerald-600" />
         </motion.div>
 

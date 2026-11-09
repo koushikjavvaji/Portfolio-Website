@@ -77,16 +77,11 @@ async function leetcode() {
     (x) => x.difficulty === "All",
   )?.count;
   const top = d.userContestRanking?.topPercentage;
-  const storedPeak = prev.leetcode?.peak ?? 0;
   return {
-    // An account with no contests still has a solved count worth saving, so
-    // fall back to the stored peak rather than failing the whole fetch.
-    peak: Math.max(storedPeak, ...ratings),
+    peak: Math.max(0, ...ratings),
     ...(ratings.length && { current: ratings.at(-1) }),
     ...(solved && { solved }),
-    // The stored peak and top % belong together: only replace the top % once
-    // this account's own best has reached that peak.
-    ...(top && Math.max(...ratings) >= storedPeak && { topPercent: top }),
+    ...(top && { topPercent: top }),
   };
 }
 
@@ -117,7 +112,8 @@ const next = { updatedAt: new Date().toISOString() };
 for (const [key, fn] of Object.entries(jobs)) {
   try {
     const res = await fn();
-    if (!res.peak) throw new Error("no rating returned");
+    // LeetCode legitimately has no rating until the first contest (peak 0).
+    if (!res.peak && key !== "leetcode") throw new Error("no rating returned");
     next[key] = keep(key, res);
   } catch (e) {
     console.warn(`${key}: keeping previous value (${e.message})`);
