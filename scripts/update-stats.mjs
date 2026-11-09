@@ -69,6 +69,7 @@ async function leetcode() {
     body: JSON.stringify({ query: q, variables: { u: HANDLES.leetcode } }),
   });
   const d = (await r.json()).data ?? {};
+  if (!d.matchedUser) throw new Error("user not returned");
   const ratings = (d.userContestRankingHistory ?? [])
     .filter((x) => x.attended)
     .map((x) => Math.round(x.rating));
@@ -76,11 +77,16 @@ async function leetcode() {
     (x) => x.difficulty === "All",
   )?.count;
   const top = d.userContestRanking?.topPercentage;
+  const storedPeak = prev.leetcode?.peak ?? 0;
   return {
-    peak: Math.max(0, ...ratings),
-    current: ratings.at(-1),
+    // An account with no contests still has a solved count worth saving, so
+    // fall back to the stored peak rather than failing the whole fetch.
+    peak: Math.max(storedPeak, ...ratings),
+    ...(ratings.length && { current: ratings.at(-1) }),
     ...(solved && { solved }),
-    ...(top && { topPercent: top }),
+    // The stored peak and top % belong together: only replace the top % once
+    // this account's own best has reached that peak.
+    ...(top && Math.max(...ratings) >= storedPeak && { topPercent: top }),
   };
 }
 
