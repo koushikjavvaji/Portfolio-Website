@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-11T13:06:36.973Z",
+  "updatedAt": "2026-11-11T23:47:56.588Z",
   "codeforces": {
     "peak": 1626,
     "rank": "expert",
@@ -13,7 +13,7 @@
     "airBest": 1715,
     "current": 1809,
     "solved": 81,
-    "air": 3377
+    "air": 3352
   },
   "leetcode": {
     "peak": 0,
