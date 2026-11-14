@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-14T03:53:05.463Z",
+  "updatedAt": "2026-11-14T12:38:52.350Z",
   "codeforces": {
     "peak": 1626,
     "rank": "expert",
@@ -17,7 +17,7 @@
   },
   "leetcode": {
     "peak": 0,
-    "solved": 79
+    "solved": 91
   },
   "atcoder": {
     "peak": 852,
